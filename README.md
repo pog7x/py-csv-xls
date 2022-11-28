@@ -12,3 +12,18 @@
 ```shell script
 pip install py-csv-xls
 ```
+
+### Example
+```python
+from py_csv_xls import CSVSniffer, ExcelWorker, PyCsvXlsException
+
+file_lines = CSVSniffer(
+    main_path="/abs/path/to/ur/csv/or/dir",
+).get_dir_files_with_lines()
+
+ExcelWorker(
+    workbook_name="/abs/path/to/ur/xl/without/extension",
+    workbook_extension=".xls",
+    want_cleared=True,
+).fill_workbook(all_data=file_lines)
+```
