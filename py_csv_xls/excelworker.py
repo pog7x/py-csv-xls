@@ -27,11 +27,12 @@ class ExcelWorker:
         self.__date_cols: typing.Dict = date_cols
         self.__load_or_create_wb()
 
-    def fill_workbook(self, all_data: typing.Dict[str, typing.List]):
+    def fill_workbook(self, all_data: typing.List[typing.Dict[str, typing.List]]):
         try:
-            for k, v in all_data.items():
-                self.__create_and_fill_ws(sheet_name=k, data_to_fill=v)
-            self.__save_and_close_wb()
+            for ad in all_data:
+                for k, v in ad.items():
+                    self.__create_and_fill_ws(sheet_name=k, data_to_fill=v)
+                self.__save_and_close_wb()
         except Exception as e:
             raise PyCsvXlsException(msg=f"{self.__class__.__name__} error", exc=e)
 
