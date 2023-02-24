@@ -1,15 +1,13 @@
 # py-csv-xls
 
-<p align="center">
-<a href="https://github.com/psf/black/blob/main/LICENSE"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg"></a>
-<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-</p>
+[![PyPI](https://img.shields.io/pypi/v/py-csv-xls)](https://pypi.org/project/py-csv-xls/)
+[![License](https://img.shields.io/github/license/pog7x/py-csv-xls)](https://github.com/pog7x/py-csv-xls/blob/master/LICENSE)
 
 ## Converter from csv format to xls
 
 ### Installation
-[PYPI](https://pypi.org/project/py-csv-xls/)
-```shell script
+
+```bash
 pip install py-csv-xls
 ```
 
