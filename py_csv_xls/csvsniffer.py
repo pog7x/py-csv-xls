@@ -27,8 +27,8 @@ class CSVSniffer:
     def get_dir_files_with_lines(self) -> typing.List:
         try:
             return list(self.__main_dir_sniffer())
-        except Exception as e:
-            raise PyCsvXlsException(msg=f"{self.__class__.__name__} error", exc=e)
+        except Exception as err:
+            raise PyCsvXlsException(msg=f"{self.__class__.__name__} error", exc=err)
 
     @property
     def is_file(self) -> bool:
@@ -39,33 +39,30 @@ class CSVSniffer:
         return self.__is_csv_file(file_name=self.__main_path, only_ext=True)
 
     def __main_dir_sniffer(self) -> typing.Generator:
-        if not os.path.exists(self.__main_dir_path) or (
-            not os.path.isdir(self.__main_dir_path) and not self.__is_file
+        if not os.path.exists(self.__main_dir_path) or not (
+            os.path.isdir(self.__main_dir_path) or self.__is_file
         ):
             raise FileNotFoundError
         if self.__is_csv_file(file_name=self.__main_path, only_ext=True):
-            yield {
-                self.__main_path.split("/")[-1].rstrip(".csv"): list(
-                    self.__csv_file_parser(self.__main_path)
-                )
-            }
+            file_name = os.path.basename(self.__main_path)
+            lines = self.__csv_file_parser(self.__main_path)
+            yield {file_name: list(lines)}
         else:
             for dir_path, _, files_list in os.walk(self.__main_dir_path):
                 yield from self.__files_sniffer_by_pattern(dir_path, files_list)
 
     def __is_csv_file(self, file_name: str, only_ext: bool = False) -> bool:
+        ends_with = str(file_name).endswith(".csv")
         if only_ext:
-            return str(file_name).endswith(".csv")
-        return str(file_name).startswith(self.__file_startswith) and file_name.endswith(
-            ".csv"
-        )
+            return ends_with
+        starts_with = str(file_name).startswith(self.__file_startswith)
+        return starts_with and ends_with
 
     def __files_sniffer_by_pattern(
         self, curr_dir_path: str, files_list: typing.List[str]
     ) -> typing.Generator:
         for file_name in files_list:
             if self.__is_csv_file(file_name=file_name):
-                self.__start_row_flag = not self.__fields
                 lines = self.__csv_file_parser(os.path.join(curr_dir_path, file_name))
                 yield {file_name: list(lines)}
 
@@ -74,5 +71,5 @@ class CSVSniffer:
             for csv_line in csv.reader(csv_file):
                 if not self.__start_row_flag and csv_line == self.__fields:
                     self.__start_row_flag = True
-                if self.__start_row_flag is True:
+                if self.__start_row_flag:
                     yield csv_line

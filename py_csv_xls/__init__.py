@@ -1,4 +1,4 @@
-__version__ = [0, 0, 5]
+__version__ = [0, 0, 6]
 
 from .csvsniffer import CSVSniffer  # noqa:F401
 from .excelworker import ExcelWorker  # noqa:F401
