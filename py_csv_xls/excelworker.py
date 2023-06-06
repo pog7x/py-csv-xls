@@ -33,8 +33,8 @@ class ExcelWorker:
                 for k, v in ad.items():
                     self.__create_and_fill_ws(sheet_name=k, data_to_fill=v)
                 self.__save_and_close_wb()
-        except Exception as e:
-            raise PyCsvXlsException(msg=f"{self.__class__.__name__} error", exc=e)
+        except Exception as err:
+            raise PyCsvXlsException(msg=f"{self.__class__.__name__} error", exc=err)
 
     @property
     def full_workbook_name(self) -> str:
